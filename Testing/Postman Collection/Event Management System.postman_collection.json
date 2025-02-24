@@ -1,0 +1,1082 @@
+{
+	"info": {
+		"_postman_id": "0c3702b1-bb1c-4052-b544-7fe47729d368",
+		"name": "Event Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40778664"
+	},
+	"item": [
+		{
+			"name": "1.1. User Registration (201)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of message and userId\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            message: {type: \"string\"},\r",
+							"            userId: {type: \"number\"}\r",
+							"        },\r",
+							"        require: [\"message\", \"userId\"]\r",
+							"    })\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"API_first_user\",\r\n  \"email\": \"API_first_user@project.com\",\r\n  \"password\": \"API_first_user123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/auth/register",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "1.2. User Registration (400)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 400\", () => {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"API_second_user\",\r\n  \"email\": \"API_first_user@project.com\",\r\n  \"password\": \"API_second_user123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/auth/register",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.1. User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object has the token\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            token: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"token\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"const userToken = pm.response.json().token;\r",
+							"pm.globals.set(\"user_token\", userToken);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"API_first_user@project.com\",\r\n  \"password\": \"API_first_user123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/auth/login",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.2. User Login (Invalid Credentials)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 401\", () => {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object has the token\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            token: {error: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"invalid_email\",\r\n  \"password\": \"API_first_user123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/auth/login",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2.3. User Login (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object has the token\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            token: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"token\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"const adminToken = pm.response.json().token;\r",
+							"pm.globals.set(\"admin_token\", adminToken);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"admin@project.com\",\r\n  \"password\": \"admin123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/auth/login",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Get All Events",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Schema is an array of events details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"array\",\r",
+							"        items: {\r",
+							"            type: \"object\",\r",
+							"            properties: {\r",
+							"            id : {type: \"number\"},\r",
+							"            name: {type: \"string\"},\r",
+							"            description: {type: \"string\"},\r",
+							"            date: {type: \"string\"},\r",
+							"            createdAt: {type: \"string\"},\r",
+							"            updatedAt: {type: \"string\"},\r",
+							"            rsvped: {type: \"boolean\"},\r",
+							"        },\r",
+							"        require: [\"id\", \"name\", \"description\", \"date\", \"createdAt\", \"updatedAt\", \"rsvped\"]\r",
+							"        }\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.1. Create an Event (Created)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of event details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            id: {type: \"number\"},\r",
+							"            name: {type: \"string\"},\r",
+							"            description: {type: \"string\"},\r",
+							"            date: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"id\", \"name\", \"description\", \"date\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.name).to.be.eq(\"Art Exhibition\");\r",
+							"})\r",
+							"\r",
+							"const lastEventId = pm.response.json().id;\r",
+							"pm.globals.set(\"last_event_Id\", lastEventId);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"name\": \"Art Exhibition\", \r\n  \"description\": \"An exhibition of contemporary art pieces.\", \r\n  \"date\": \"2025-01-10\" \r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4.2. Create an Event (Forbidden)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 403\", () => {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.error).to.be.eq(\"Admin access required.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"name\": \"Invalid Event\", \r\n  \"description\": \"This event is created by a user not an admin and shouldn't be created\", \r\n  \"date\": \"2025-01-10\" \r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.1. RSVP to an Event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of event details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            message: {type: \"string\"},\r",
+							"            eventId: {type: \"number\"}\r",
+							"        },\r",
+							"        require: [\"message\", \"eventId\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.message).to.be.eq(\"RSVP confirmed for event.\");\r",
+							"    const id = pm.globals.get(\"last_event_Id\");\r",
+							"    pm.expect(responseBody.eventId).to.be.eq(id);\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{last_event_Id}}/rsvps",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{last_event_Id}}",
+						"rsvps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.2. RSVP to an Event (Not Found)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 404\", () => {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of an error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.error).to.be.eq(\"Event not found.\");\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/-1/rsvps",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"-1",
+						"rsvps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5.3. RSVP to an Event (By Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of event details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            message: {type: \"string\"},\r",
+							"            eventId: {type: \"number\"}\r",
+							"        },\r",
+							"        require: [\"message\", \"eventId\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.message).to.be.eq(\"RSVP confirmed for event.\");\r",
+							"    const id = pm.globals.get(\"last_event_Id\");\r",
+							"    pm.expect(responseBody.eventId).to.be.eq(id);\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{last_event_Id}}/rsvps",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{last_event_Id}}",
+						"rsvps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6.1. Get RSVPs for an Event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Schema is an array of users details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"array\",\r",
+							"        items: {\r",
+							"            type: \"object\",\r",
+							"            properties: {\r",
+							"            userId : {type: \"number\"},\r",
+							"            username: {type: \"string\"},\r",
+							"            email: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"userId\", \"username\", \"email\"]\r",
+							"        }\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{last_event_Id}}/rsvps",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{last_event_Id}}",
+						"rsvps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "6.2. Get RSVPs for an Event (Forbidden)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 403\", () => {\r",
+							"    pm.response.to.have.status(403);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of an error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.error).to.be.eq(\"Admin access required.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{last_event_Id}}/rsvps",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{last_event_Id}}",
+						"rsvps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.1. Delete an Event",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of an confirmation message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            message: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"message\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.message).to.be.eq(\"Event deleted successfully.\");\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{last_event_Id}}",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{last_event_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.2. Delete an Event (Not Found)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 404\", () => {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of an error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.error).to.be.eq(\"Event not found.\");\r",
+							"})\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/-1",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.3 Pre - 7.4 Delete an Event (By User)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 201\", () => {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of event details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            id: {type: \"number\"},\r",
+							"            name: {type: \"string\"},\r",
+							"            description: {type: \"string\"},\r",
+							"            date: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"id\", \"name\", \"description\", \"date\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.name).to.be.eq(\"Temp Event\");\r",
+							"})\r",
+							"\r",
+							"const tempEventId = pm.response.json().id;\r",
+							"pm.globals.set(\"temp_event_Id\", tempEventId);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \r\n  \"name\": \"Temp Event\", \r\n  \"description\": \"This event is used by 7.4 Delete an Event (By User)\", \r\n  \"date\": \"2025-02-24\" \r\n} ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "7.4. Delete an Event (By User)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 403\", () => {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of error message\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            error: {type: \"string\"}\r",
+							"        },\r",
+							"        require: [\"error\"]\r",
+							"    })\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Check the response body\", () => {\r",
+							"    const responseBody = pm.response.json();\r",
+							"    pm.expect(responseBody.error).to.be.eq(\"Access denied.\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/events/{{temp_event_Id}}",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"events",
+						"{{temp_event_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "8. Get User Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Schema is an object consists of user details\", () => {\r",
+							"    pm.response.to.have.jsonSchema({\r",
+							"        type: \"object\",\r",
+							"        properties: {\r",
+							"            id: {type: \"number\"},\r",
+							"            username: {type: \"string\"},\r",
+							"            email: {type: \"string\"},\r",
+							"            isAdmin: {type: \"boolean\"}\r",
+							"        },\r",
+							"        require: [\"id\", \"username\", \"email\", \"isAdmin\"]\r",
+							"    })\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{user_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{EventManagementSystem_url}}/users/profile",
+					"host": [
+						"{{EventManagementSystem_url}}"
+					],
+					"path": [
+						"users",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
