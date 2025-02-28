@@ -3,4 +3,4 @@
 - Validated user authentication and role-based access control.
 - Performed Automated Web End-to-End testing.
 - Performed manual and automated API testing to validate the backend functionalities.
-- Performed database SQL queries using MariaDB to guarantee the connection between the backend and the database and validate data integrity.
+- Performed database SQL queries using MariaDB to guarantee the connection between the backend and the database and the validate data integrity.
